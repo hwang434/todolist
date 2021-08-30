@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edittext_main_titleinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="name"
+            android:hint="@string/main_title"
+            android:inputType="none"
+            android:textAlignment="center"
+            android:privateImeOptions="defaultInputmode=korean"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/edittext_main_contentinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="name"
+            android:hint="@string/main_content"
+            android:inputType="none"
+            android:textAlignment="center"
+            android:privateImeOptions="defaultInputmode=korean"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/button_main_createtodo"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#C5C1CB"
+            android:enabled="true"
+            android:text="@string/main_registerbutton"
+            android:textColor="#546E7A"
+            android:textSize="25sp" />
+        <Button
+            android:id="@+id/button_main_deletebutton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/main_deleteallbutton"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_main_todolists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">todolist</string>
+    <string name="main_title">제목을 입력하세요</string>
+    <string name="main_content">할 일을 입력하세요</string>
+    <string name="main_registerbutton">등록 버튼</string>
+    <string name="main_deleteallbutton">전체 삭제</string>
+</resources>

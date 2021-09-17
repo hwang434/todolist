@@ -18,35 +18,24 @@ import com.goodee.todolist.viewmodels.ToDoListViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: ToDoListViewModel
+    private val database by lazy { ToDoListDatabase.getInstance(application).toDoListDao}
+    private val viewModelFactory by lazy { ToDoListViewModelFactory(database, application)}
+    private val viewModel: ToDoListViewModel by lazy { ViewModelProvider(this, viewModelFactory).get(ToDoListViewModel::class.java)}
+    private val recyclerView by lazy {binding.recyclerviewMainTodolists}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val application = this.application
-        val database = ToDoListDatabase.getInstance(application).toDoListDao
-
-        val viewModelFactory = ToDoListViewModelFactory(database, application)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(ToDoListViewModel::class.java)
-
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
-        var toDoListAdapter = ToDoListAdapter(viewModel.toDoLists, fun(primaryKey: Int) {
-            Toast.makeText(this, "${primaryKey} : done to do list", Toast.LENGTH_SHORT).show()
+        val toDoListAdapter = ToDoListAdapter(viewModel.toDoLists
+            ,fun(primaryKey: Int) {
             doneToDoList(primaryKey)
         })
-        val recyclerView = binding.recyclerviewMainTodolists
         recyclerView.adapter = toDoListAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         viewModel.toDoLists.observe(this, Observer {
-            Toast.makeText(this, "변했음",Toast.LENGTH_SHORT).show()
-            toDoListAdapter = ToDoListAdapter(viewModel.toDoLists,
-                fun(primaryKey: Int) {
-                    Toast.makeText(this, "${primaryKey} : done to do list", Toast.LENGTH_SHORT).show()
-                    doneToDoList(primaryKey)
-                }
-            )
+            toDoListAdapter.toDoLists = viewModel.toDoLists
             recyclerView.adapter = toDoListAdapter
         })
 
@@ -62,9 +51,12 @@ class MainActivity : AppCompatActivity() {
                 val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.showSoftInput(binding.edittextMainContentinput, 0)
             } else {
-                val toDo = ToDoList()
-                toDo.title = binding.edittextMainTitleinput.text.toString()
-                toDo.content = binding.edittextMainContentinput.text.toString()
+                val toDo = ToDoList(title = binding.edittextMainTitleinput.text.toString()
+                    ,content = binding.edittextMainContentinput.text.toString()
+                )
+                binding.edittextMainTitleinput.text.clear()
+                binding.edittextMainContentinput.text.clear()
+
                 viewModel.makeNewToDoList(toDo)
             }
         }

@@ -18,6 +18,7 @@ import com.goodee.todolist.viewmodels.ToDoListViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: ToDoListViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -26,19 +27,27 @@ class MainActivity : AppCompatActivity() {
         val database = ToDoListDatabase.getInstance(application).toDoListDao
 
         val viewModelFactory = ToDoListViewModelFactory(database, application)
-        val viewModel = ViewModelProvider(this, viewModelFactory).get(ToDoListViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ToDoListViewModel::class.java)
 
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
 
-        var toDoListAdapter = ToDoListAdapter(viewModel.toDoLists)
+        var toDoListAdapter = ToDoListAdapter(viewModel.toDoLists, fun(primaryKey: Int) {
+            Toast.makeText(this, "${primaryKey} : done to do list", Toast.LENGTH_SHORT).show()
+            doneToDoList(primaryKey)
+        })
         val recyclerView = binding.recyclerviewMainTodolists
         recyclerView.adapter = toDoListAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         viewModel.toDoLists.observe(this, Observer {
-            toDoListAdapter = ToDoListAdapter(viewModel.toDoLists)
+            Toast.makeText(this, "변했음",Toast.LENGTH_SHORT).show()
+            toDoListAdapter = ToDoListAdapter(viewModel.toDoLists,
+                fun(primaryKey: Int) {
+                    Toast.makeText(this, "${primaryKey} : done to do list", Toast.LENGTH_SHORT).show()
+                    doneToDoList(primaryKey)
+                }
+            )
             recyclerView.adapter = toDoListAdapter
-            recyclerView.layoutManager = LinearLayoutManager(this)
         })
 
         binding.buttonMainCreatetodo.setOnClickListener {
@@ -62,5 +71,9 @@ class MainActivity : AppCompatActivity() {
         binding.buttonMainDeletebutton.setOnClickListener {
             viewModel.deleteAllToDoList()
         }
+    }
+
+    private fun doneToDoList(primaryKey: Int) {
+        viewModel.doneToDoList(primaryKey)
     }
 }

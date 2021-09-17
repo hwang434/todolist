@@ -28,6 +28,9 @@ interface ToDoListDao {
     suspend fun deleteAllToDo()
 
     // 한 일 체크하기
-    @Query("UPDATE ToDoList SET isFinish = 0")
-    suspend fun finishToDoList()
+    @Query("UPDATE ToDoList SET isFinish = 1 WHERE `no` = :primaryKey")
+    suspend fun doneToDoList(primaryKey: Int)
+
+    @Query("SELECT * FROM ToDoList WHERE isFinish = 0")
+    fun getUnDoneList(): LiveData<List<ToDoList>>
 }

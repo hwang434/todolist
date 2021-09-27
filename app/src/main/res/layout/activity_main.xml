@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:autofillHints="name"
             android:hint="@string/main_title"
-            android:inputType="none"
+            android:inputType="text"
             android:textAlignment="center"
             android:privateImeOptions="defaultInputmode=korean"
             android:textSize="24sp" />
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:autofillHints="name"
             android:hint="@string/main_content"
-            android:inputType="none"
+            android:inputType="textMultiLine"
             android:textAlignment="center"
             android:privateImeOptions="defaultInputmode=korean"
             android:textSize="24sp" />

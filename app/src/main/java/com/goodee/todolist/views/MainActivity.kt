@@ -40,15 +40,16 @@ class MainActivity : AppCompatActivity() {
         })
 
         binding.buttonMainCreatetodo.setOnClickListener {
-            if (binding.edittextMainTitleinput.text.isNullOrEmpty() || binding.edittextMainTitleinput.text.isNullOrBlank()) {
+            val imm by lazy { getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager }
+            if (binding.edittextMainTitleinput.text.isNullOrEmpty() || binding.edittextMainTitleinput.text.isBlank()) {
                 Toast.makeText(this, "제목을 확인해주세요.", Toast.LENGTH_SHORT).show()
                 binding.edittextMainTitleinput.requestFocus()
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+
                 imm.showSoftInput(binding.edittextMainTitleinput,0)
-            } else if (binding.edittextMainContentinput.text.isNullOrEmpty() || binding.edittextMainContentinput.text.isNullOrBlank()) {
+            } else if (binding.edittextMainContentinput.text.isNullOrEmpty() || binding.edittextMainContentinput.text.isBlank()) {
                 Toast.makeText(this, "내용을 확인해주세요.", Toast.LENGTH_SHORT).show()
                 binding.edittextMainContentinput.requestFocus()
-                val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+
                 imm.showSoftInput(binding.edittextMainContentinput, 0)
             } else {
                 val toDo = ToDoList(title = binding.edittextMainTitleinput.text.toString()
@@ -60,6 +61,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.makeNewToDoList(toDo)
             }
         }
+
         binding.buttonMainDeletebutton.setOnClickListener {
             viewModel.deleteAllToDoList()
         }

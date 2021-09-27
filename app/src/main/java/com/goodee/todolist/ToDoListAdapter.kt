@@ -22,11 +22,6 @@ class ToDoListAdapter(var toDoLists: LiveData<List<ToDoList>>,
         val title = binding.textviewItemTitle
         val content = binding.textviewItemContent
         val isFinish = binding.checkboxItemIsfinish
-        init {
-            binding.root.setOnClickListener {
-                Toast.makeText(binding.root.context, "클릭 된 아이 = ${binding.textviewItemPrimarykey.text}", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToDoListAdapter.ViewHolder {
         val binding = DataBindingUtil.inflate<ItemTodolistBinding>(LayoutInflater.from(parent.context),R.layout.item_todolist, parent, false)
